@@ -11,15 +11,6 @@ header {
     background-color:#13293d;
     margin :0;
   }
-  
-h1 {
-    font-size: 150%;
-  }
-h3{
-    padding: 0%;
-}
-
-  
 h2 {
     font-size: 250%;
   }
@@ -31,17 +22,6 @@ main {
     max-width: 96%;
     margin: 2% auto;
   }
-
-p{
-    font-size: 150%;
-    text-align: justify;
-  }
-
-  form p {
-    text-align: center;
-  }
-
-
 .text-center {
   text-align: center;
 }
@@ -64,11 +44,7 @@ p{
   margin: 10px;
 }
 
-.card img {
-  display: block;
-  margin: 10px auto;
-  max-width: 200px;
-}
+
 
 .card header{
   display:block;
@@ -78,19 +54,13 @@ p{
   flex: 4;
   padding: 20px;
   display: flex;
- 
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
 
-button{
-    background-color:#13293d;
-    color: rgb(214, 223, 224);
-    width: 70px;
-    margin: auto;
-}
+
 
 @media screen and (max-width: 768px) {
     .team{
