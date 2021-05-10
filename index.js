@@ -4,14 +4,15 @@ const fs = require('fs');
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
+const htmlFile = require('./src/script');
+//import { header, footer,card1 , card2,card3, card4 } from './src/script';
 
-let managerDetails = [];
+let managerDetails ;
 let engineerDetails = [];
 let internDetails = [];
 
 function createManagerObj(answers){
-        const mng = new Manager(answers.name,answers.ID,answers.email,answers.officeNumber);
-        managerDetails.push(mng);
+        managerDetails = new Manager(answers.name,answers.ID,answers.email,answers.officeNumber);
 }
 
 function createEngineerObj(answers){
@@ -27,12 +28,12 @@ function createInternObj(answers){
 // Array of questions for user input
 const managerQuestions = [{
           type: 'input',
-          name: 'managerName',
+          name: 'name',
           message: 'Please enter team Manager’s name:',
         },
         {
           type: 'input',
-          name: 'employeeIDManager',
+          name: 'ID',
           message: 'What is the employee ID of team Manager?',
         },
         {
@@ -100,45 +101,17 @@ const menuQuestions = [
   },
 ];
 
-const generateReadMEFile = (answers) =>{
-    const licence = answers.licence.trim();
-    return `# ${((answers.title.trim() === "") ? 'N/A': answers.title.trim())} 
-    
-${'![Licence]('+licenceBadges[licence][0]+'.png)'}    
-
-${(answers.description.trim() === "") ? '': '## Description\n\`\`\`'+answers.description.trim()+'\`\`\`'}
-
-## Table of Contents
-${(answers.installation.trim() === "") ? '': '- [Installation](#installation)'}
-${(answers.usage.trim() === "") ? '': '- [Usage](#usage)'}
-${(answers.contribute.trim() === "") ? '': '- [Contributing](#contributing)'}
-- [License](#license)
-${(answers.features.trim() === "") ? '': '- [Features](#features)'}
-${((answers.email.trim() === "") && (answers.githubUsername.trim() === ""))? '':'- [Got_Any_Questions](#Got_Any_Questions)'}
-
-${(answers.installation.trim() === "") ? '': '## Installation\n\`\`\`'+answers.installation.trim()+'\`\`\`'} 
-
-${(answers.usage.trim() === "") ? '': '## Usage\n\`\`\`'+answers.usage.trim()+'\`\`\`'} 
-
-${(answers.contribute.trim() === "") ? '': '## Contributing\n\`\`\`'+answers.contribute.trim()+'\`\`\`'} 
-
-${(answers.tests.trim() === "") ? '': '## Tests\n\`\`\`'+answers.tests.trim()+'\`\`\`'} 
-
-## License\n\`\`\`${licence}\`\`\`
-
-${(answers.features.trim() === "") ? '': '## Features\n\`\`\`'+answers.features.trim()+'\`\`\`'} 
-
-${((answers.email.trim() === "") && (answers.githubUsername.trim() === ""))? '': '## Got_Any_Questions\nFeel free to reach me through\n'+((answers.email.trim() === "") ? '': answers.email.trim())+'\n'+((answers.githubUsername.trim() === "") ? '': '\nhttps://github.com/'+answers.githubUsername.trim())}
-`;
-}
-
 function menuOptions(){
     inquirer.prompt(menuQuestions)
     .then((answers) =>{
         if(answers.menu === "Finish building my team"){
-            console.log(engineerDetails);
-            console.log(internDetails);
-            return;
+              // generate HTML file
+             const HTMLPageContent = generateHTMLFile();
+    
+            fs.writeFile('./dist/index.html', HTMLPageContent, (err) =>
+                err ? console.log(err) : console.log('Successfully created HTML file!')
+          );
+            return ;
         } 
         else if(answers.menu === 'Add an Engineer'){
             inquirer.prompt(engineerQuestions)
@@ -159,6 +132,22 @@ function menuOptions(){
     })
 }
 
+const generateHTMLFile = () =>{
+    let internCards = '';
+    let engineerCards = '';
+    let managerCard = htmlFile.card1+ managerDetails.getName() + '<br>'+ managerDetails.getRole()+htmlFile.card2+'Id: '+ managerDetails.getId()+ htmlFile.card3 +'Email: <a href = "mailto: '+ managerDetails.getEmail()+'">'+managerDetails.getEmail()+'</a>'  + htmlFile.card4+'Office Number: '+ managerDetails.getOfficeNumber() +htmlFile.card5;
+    engineerDetails.forEach(function(item){
+        engineerCards = engineerCards+ htmlFile.card1+item.getName() + '<br>'+item.getRole()+htmlFile.card2+'Id: '+item.getId()+ htmlFile.card3 +'Email: <a href = "mailto: '+ item.getEmail()+'">'+item.getEmail()+'</a>' + htmlFile.card4+"GitHub: <a href='https://github.com/"+ item.getGithub()+"' target='_blank'>"+item.getGithub()+"</a>"+htmlFile.card5;
+    })
+
+    internDetails.forEach(function(item){
+        internCards = internCards+ htmlFile.card1+item.getName() + '<br>'+item.getRole()+htmlFile.card2+'Id: '+item.getId()+ htmlFile.card3 +'Email: <a href = "mailto: '+ item.getEmail()+'">'+item.getEmail()+'</a>'  + htmlFile.card4+'School: '+ item.getSchool() +htmlFile.card5;
+    })
+
+    return htmlFile.header + managerCard + engineerCards + internCards + htmlFile.footer;
+}
+
+
 // function to initialize app
 function init() {
     inquirer.prompt(managerQuestions)
@@ -166,12 +155,6 @@ function init() {
         // create manager object
         createManagerObj(answers);
         menuOptions();
-
-   //     const readMEPageContent = generateReadMEFile(answers);
-    
-   //     fs.writeFile('SampleREADME.md', readMEPageContent, (err) =>
-   //       err ? console.log(err) : console.log('Successfully created Sample README.md!')
-   //     );
       });
 }
 

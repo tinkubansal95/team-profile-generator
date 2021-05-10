@@ -74,12 +74,14 @@ p{
   display:block;
   text-align: center;
 }
-.projects {
+.team {
   flex: 4;
   padding: 20px;
   display: flex;
-  flex-wrap: wrap;
+ 
   justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 
@@ -91,11 +93,8 @@ button{
 }
 
 @media screen and (max-width: 768px) {
-    .projects{
+    .team{
       flex-direction: column;
-    }
-    .card{
-      max-height: 260px;
     }
   }
 
