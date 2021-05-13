@@ -9,3 +9,5 @@
 https://drive.google.com/file/d/1X9iG_eTOzZp8rzJuoHZspi97jSLRFwup/view
 
 ## Sample HTML file generated using this application
+
+https://tinkubansal95.github.io/team-profile-generator/dist/index.html
